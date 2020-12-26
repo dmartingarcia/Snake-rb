@@ -1,4 +1,8 @@
+#!/usr/bin/env ruby
+
 require 'gosu'
+require_relative 'fruit.rb'
+require_relative 'snake.rb'
 
 HEIGHT = 40
 WIDTH = 40
@@ -35,7 +39,7 @@ class SnakeGame < Gosu::Window
       @steps_alive = STEPS_ALIVE
     end
 
-    if snake.selfbiting? || snake.collisioned? || starved?
+    if dead?
       gameover_text
     else
       @snake.step
@@ -46,6 +50,10 @@ class SnakeGame < Gosu::Window
     @fruit.draw
     @menu.draw(@snake, @fruit, @steps_alive)
 
+  end
+
+  def dead?
+    snake.selfbiting? || snake.collisioned? || starved?
   end
 
   def starved?
@@ -74,118 +82,6 @@ class SnakeGame < Gosu::Window
   def reset
     @snake = Snake.new
     @fruit = Fruit.new
-  end
-end
-
-class Snake
-  attr_reader :x, :y, :tail, :size
-  MIN_SIZE = 3
-
-  def initialize
-    @x = rand(0..WIDTH)
-    @y = rand(0..HEIGHT)
-
-    @size = MIN_SIZE
-
-    @tail = []
-
-    size.times do |i|
-      x = @x
-      y = @y - i
-      @tail.push([x, y])
-    end
-
-    @vel_x = 0
-    @vel_y = 0
-  end
-
-  def step
-    @x = (@x + @vel_x)
-    @y = (@y + @vel_y)
-    if @vel_x != 0 or @vel_y != 0
-      tail.insert 0, [@x, @y]
-      tail.pop
-    end
-  end
-
-  def draw
-    tail.each_with_index do |elem, index|
-      x, y = elem
-      if index == 0
-        Gosu.draw_rect(pos_x(x), pos_y(y), TILE_SIZE, TILE_SIZE, color(index))
-      else
-        Gosu.draw_rect(pos_x(x), pos_y(y), TILE_SIZE, TILE_SIZE, color(index))
-      end
-    end
-  end
-
-  def color(index)
-    return Gosu::Color::YELLOW if collisioned?
-
-    if index == 0
-      Gosu::Color::YELLOW
-    else
-      Gosu::Color::WHITE
-    end
-  end
-
-  def pos_x(x = @x)
-    x *TILE_SIZE
-  end
-
-  def pos_y(y = @y)
-    y * TILE_SIZE
-  end
-
-  def moving?
-    @vel_x != 0 || @vel_y != 0
-  end
-
-  def selfbiting?
-    tail[1..-1].include? [x, y]
-  end
-
-  def collisioned?
-    !(0..WIDTH).include?(x) || !(0..HEIGHT).include?(y)
-  end
-
-  def grow_up
-    @size += 1
-    tail.push(tail[-1])
-  end
-
-  def move(id)
-    case id
-    when Gosu::KB_LEFT
-      @vel_x, @vel_y = -1, 0 unless @vel_x == 1
-    when Gosu::KB_RIGHT
-      @vel_x, @vel_y = 1, 0 unless @vel_x == -1
-    when Gosu::KB_UP
-      @vel_x, @vel_y = 0, -1 unless @vel_y == 1
-    when Gosu::KB_DOWN
-      @vel_x, @vel_y = 0, 1 unless @vel_y == -1
-    end
-  end
-end
-
-class Fruit
-  attr_reader :x, :y
-
-  def initialize
-    @x = rand(0.. WIDTH)
-    @y = rand(0..HEIGHT)
-  end
-
-  def pos_x
-    @x * TILE_SIZE
-  end
-
-  def pos_y
-    @y * TILE_SIZE
-  end
-
-  def draw
-    Gosu.draw_rect(pos_x, pos_y, TILE_SIZE, TILE_SIZE, Gosu::Color::RED)
   end
 end
 
