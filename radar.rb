@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 class Radar
   def initialize(snake, fruit)
@@ -22,25 +23,17 @@ class Radar
     -front_fruit
   end
 
-  def front_wall
+  def front_wall; end
 
-  end
+  def left_wall; end
 
-  def left_wall
+  def right_wall; end
 
-  end
-
-  def right_wall
-
-  end
-
-  def rear_wall
-
-  end
+  def rear_wall; end
 
   def vector_distance(x, y)
-    Math.sqrt((x ** 2) +
-              (y ** 2)).to_i
+    Math.sqrt((x**2) +
+              (y**2)).to_i
   end
 
   def vector_to_fruit

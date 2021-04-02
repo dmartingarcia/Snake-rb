@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'gosu'
 
@@ -6,7 +7,7 @@ class Fruit
   attr_reader :x, :y
 
   def initialize
-    @x = rand(0.. WIDTH)
+    @x = rand(0..WIDTH)
     @y = rand(0..HEIGHT)
   end
 

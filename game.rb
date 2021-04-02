@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'gosu'
-require_relative 'fruit.rb'
-require_relative 'snake.rb'
+require_relative 'fruit'
+require_relative 'snake'
 
 HEIGHT = 40
 WIDTH = 40
@@ -17,15 +18,16 @@ class SnakeGame < Gosu::Window
     @snake = Snake.new
     @fruit = Fruit.new
     @menu = Menu.new(self)
-    @font = Gosu::Font.new(self, Gosu::default_font_name, 20)
+    @font = Gosu::Font.new(self, Gosu.default_font_name, 20)
     @steps_alive = STEPS_ALIVE
     self.update_interval = 100
   end
 
   def button_down(id)
-    if id == Gosu::KB_SPACE
+    case id
+    when Gosu::KB_SPACE
       reset
-    elsif id == Gosu::KB_ESCAPE
+    when Gosu::KB_ESCAPE
       exit
     else
       snake.move(id)
@@ -49,7 +51,6 @@ class SnakeGame < Gosu::Window
     @snake.draw
     @fruit.draw
     @menu.draw(@snake, @fruit, @steps_alive)
-
   end
 
   def dead?
@@ -66,13 +67,9 @@ class SnakeGame < Gosu::Window
   end
 
   def gameover_text
-    draw_text("Game Over!", WIDTH / 2 * TILE_SIZE, HEIGHT / 2 * TILE_SIZE)
-    draw_text("Press SPACE to CONTINUE", -60 + WIDTH / 2 * TILE_SIZE, 40 + HEIGHT / 2 * TILE_SIZE)
-  end
-
-  def gameover_text
-    draw_text("Game Over!", WIDTH / 2 * TILE_SIZE, HEIGHT / 2 * TILE_SIZE)
-    draw_text("Press SPACE to CONTINUE", -60 + WIDTH / 2 * TILE_SIZE, 40 + HEIGHT / 2 * TILE_SIZE)
+    draw_text('Game Over!', WIDTH / 2 * TILE_SIZE, HEIGHT / 2 * TILE_SIZE)
+    draw_text('Press SPACE to CONTINUE', -60 + WIDTH / 2 * TILE_SIZE, 40 + HEIGHT / 2 * TILE_SIZE)
+    draw_text('Press ESC to EXIT', -20 + WIDTH / 2 * TILE_SIZE, 80 + HEIGHT / 2 * TILE_SIZE)
   end
 
   def draw_text(text, x, y)
@@ -90,18 +87,18 @@ class Menu
   X_OFFSET = 3 * TILE_SIZE
 
   def initialize(window)
-    @font = Gosu::Font.new(window, Gosu::default_font_name, 20)
+    @font = Gosu::Font.new(window, Gosu.default_font_name, 20)
   end
 
   def draw(snake, fruit, steps_alive)
     Gosu.draw_rect(starting_x_pos + TILE_SIZE, 0, TILE_SIZE, HEIGHT * TILE_SIZE, Gosu::Color::GRAY)
     y_pos = 0
 
-    draw_text("Sneaky Snake-rb", starting_x_pos + X_OFFSET, 20)
-    draw_text("Snake:", starting_x_pos + X_OFFSET, 60)
+    draw_text('Sneaky Snake-rb', starting_x_pos + X_OFFSET, 20)
+    draw_text('Snake:', starting_x_pos + X_OFFSET, 60)
     draw_text("  Size: #{snake.tail.size}", starting_x_pos + X_OFFSET, 80)
     draw_text("  Pos: #{snake.x},#{snake.y}", starting_x_pos + X_OFFSET, 100)
-    draw_text("Fruit:", starting_x_pos + X_OFFSET, 120)
+    draw_text('Fruit:', starting_x_pos + X_OFFSET, 120)
     draw_text("  Pos: #{fruit.x},#{fruit.y}", starting_x_pos + X_OFFSET, 140)
     draw_text("Steps Alive: #{steps_alive}", starting_x_pos + X_OFFSET, 160)
   end
