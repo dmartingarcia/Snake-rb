@@ -1,6 +1,8 @@
 # Snake-rb
 Snake game using Gosu, also having Deep Learning
 
+This project is fully dockerized and prepared to run in Unix systems, tested and executed in Debian-like/Ubuntu OS.
+
 ## Usage:
 ```
 make build                          Generate entire development environment
