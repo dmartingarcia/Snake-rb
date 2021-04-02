@@ -72,8 +72,8 @@ class SnakeGame < Gosu::Window
     draw_text('Press ESC to EXIT', -20 + WIDTH / 2 * TILE_SIZE, 80 + HEIGHT / 2 * TILE_SIZE)
   end
 
-  def draw_text(text, x, y)
-    @font.draw(text, x, y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+  def draw_text(text, x_pos, y_pos)
+    @font.draw(text, x_pos, y_pos, 1, 1.0, 1.0, Gosu::Color::WHITE)
   end
 
   def reset
@@ -92,7 +92,6 @@ class Menu
 
   def draw(snake, fruit, steps_alive)
     Gosu.draw_rect(starting_x_pos + TILE_SIZE, 0, TILE_SIZE, HEIGHT * TILE_SIZE, Gosu::Color::GRAY)
-    y_pos = 0
 
     draw_text('Sneaky Snake-rb', starting_x_pos + X_OFFSET, 20)
     draw_text('Snake:', starting_x_pos + X_OFFSET, 60)
@@ -103,8 +102,8 @@ class Menu
     draw_text("Steps Alive: #{steps_alive}", starting_x_pos + X_OFFSET, 160)
   end
 
-  def draw_text(text, x, y)
-    @font.draw(text, x, y, 1, 1.0, 1.0, Gosu::Color::WHITE)
+  def draw_text(text, x_pos, y_pos)
+    @font.draw(text, x_pos, y_pos, 1, 1.0, 1.0, Gosu::Color::WHITE)
   end
 
   def starting_x_pos

@@ -4,7 +4,7 @@
 require 'gosu'
 
 class Snake
-  attr_reader :vel_x, :vel_y, :x, :y, :tail, :size
+  attr_reader :vel_x, :vel_y, :x, :y, :tail
 
   MIN_SIZE = 3
 
@@ -27,10 +27,11 @@ class Snake
   def step
     @x = (@x + @vel_x)
     @y = (@y + @vel_y)
-    if (@vel_x != 0) || (@vel_y != 0)
-      tail.insert 0, [@x, @y]
-      tail.pop
-    end
+
+    return unless moving?
+
+    tail.insert 0, [@x, @y]
+    tail.pop
   end
 
   def size
@@ -40,11 +41,7 @@ class Snake
   def draw
     tail.each_with_index do |elem, index|
       x, y = elem
-      if index.zero?
-        Gosu.draw_rect(pos_x(x), pos_y(y), TILE_SIZE, TILE_SIZE, color(index))
-      else
-        Gosu.draw_rect(pos_x(x), pos_y(y), TILE_SIZE, TILE_SIZE, color(index))
-      end
+      Gosu.draw_rect(pos_x(x), pos_y(y), TILE_SIZE, TILE_SIZE, color(index))
     end
   end
 
@@ -58,12 +55,12 @@ class Snake
     end
   end
 
-  def pos_x(x = @x)
-    x * TILE_SIZE
+  def pos_x(x_tile = @x)
+    x_tile * TILE_SIZE
   end
 
-  def pos_y(y = @y)
-    y * TILE_SIZE
+  def pos_y(y_tile = @y)
+    y_tile * TILE_SIZE
   end
 
   def moving?
@@ -82,28 +79,28 @@ class Snake
     tail.push(tail[-1])
   end
 
-  def move(id)
-    case id
+  def move(key_id)
+    case key_id
     when Gosu::KB_LEFT
-      unless @vel_x == 1
-        @vel_x = -1
-        @vel_y = 0
-      end
+      return if @vel_x == 1
+
+      @vel_x = -1
+      @vel_y = 0
     when Gosu::KB_RIGHT
-      unless @vel_x == -1
-        @vel_x = 1
-        @vel_y = 0
-      end
+      return if @vel_x == -1
+
+      @vel_x = 1
+      @vel_y = 0
     when Gosu::KB_UP
-      unless @vel_y == 1
-        @vel_x = 0
-        @vel_y = -1
-      end
+      return if @vel_y == 1
+
+      @vel_x = 0
+      @vel_y = -1
     when Gosu::KB_DOWN
-      unless @vel_y == -1
-        @vel_x = 0
-        @vel_y = 1
-      end
+      return if @vel_y == -1
+
+      @vel_x = 0
+      @vel_y = 1
     end
   end
 end

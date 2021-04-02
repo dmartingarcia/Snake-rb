@@ -31,9 +31,9 @@ class Radar
 
   def rear_wall; end
 
-  def vector_distance(x, y)
-    Math.sqrt((x**2) +
-              (y**2)).to_i
+  def vector_distance(x_pos, y_pos)
+    Math.sqrt((x_pos**2) +
+              (y_pos**2)).to_i
   end
 
   def vector_to_fruit
