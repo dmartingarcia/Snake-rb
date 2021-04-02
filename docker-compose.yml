@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  app:
+    privileged: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: "host"
+    volumes:
+      - $HOME/.Xauthority:/root/.Xauthority:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      DISPLAY: $DISPLAY
